@@ -34,6 +34,7 @@ public class UserService {
             updateUser.setLastName(newUser.getLastName());
             updateUser.setEmail(newUser.getEmail());
             iUserRepository.save(updateUser);
+
         } else {
             throw new UserNotFoundException("El Usuario con el ID: "+id+" no pudo ser encontrado");
         }

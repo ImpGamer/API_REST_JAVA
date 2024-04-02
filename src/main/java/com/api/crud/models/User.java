@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 @Entity
 @Table(name = "USERS")
 @Data
@@ -21,6 +23,7 @@ public class User {
     @Column
     private String lastName;
     @Column(length = 50)
+    @NotEmpty
     private String email;
     public User(String firstName,String lastName,String email) {
         this.firstName = firstName;
