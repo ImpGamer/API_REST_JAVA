@@ -1,5 +1,6 @@
 package com.api.crud.services;
 
+import com.api.crud.exceptions.UserNotFoundException;
 import com.api.crud.models.User;
 import com.api.crud.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,14 @@ public class UserService {
     public ArrayList<User> traerUsuarios() {
         return (ArrayList<User>) iUserRepository.findAll();
     }
-    public Optional<User> buscarUsuario_ID(Long id) {
-        return iUserRepository.findById(id);
+    public Optional<User> buscarUsuario_ID(Long id)throws UserNotFoundException {
+        Optional<User> usuarioBBDD = iUserRepository.findById(id);
+        if(usuarioBBDD.isEmpty()) {
+            throw new UserNotFoundException("El usuario con el id: "+id+" no fue encontrado");
+        }
+        return usuarioBBDD;
     }
-    public User editarUsuario(User newUser,Long id)throws Exception {
+    public User editarUsuario(User newUser,Long id)throws UserNotFoundException {
         User updateUser;
         Optional<User> userBBDD = iUserRepository.findById(id);
 
@@ -30,7 +35,7 @@ public class UserService {
             updateUser.setEmail(newUser.getEmail());
             iUserRepository.save(updateUser);
         } else {
-            throw new Exception("El Usuario con el ID: "+id+" no pudo ser encontrado");
+            throw new UserNotFoundException("El Usuario con el ID: "+id+" no pudo ser encontrado");
         }
         return updateUser;
     }
